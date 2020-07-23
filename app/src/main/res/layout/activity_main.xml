@@ -10,6 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -20,63 +21,80 @@
             android:layout_height="match_parent"
             android:background="@drawable/background_gradient">
 
+            <TextView
+                android:id="@+id/text_view_target_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="93dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="City Here"
+                android:textColor="#FFFFFF"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/image_view_target_icon"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="68dp"
+                android:layout_marginBottom="100dp"
+                app:layout_constraintBottom_toTopOf="@+id/text_view_target_temp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.507"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_target_city"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
-                android:id="@+id/text_view_target_city"
+                android:id="@+id/text_view_others"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:text="City Here"
-                android:textColor="#FFFFFF"
-                android:textSize="20dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Trivials here"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_view_target_icon" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_target_temp" />
 
             <TextView
-                android:id="@+id/text_view_target_weather"
+                android:id="@+id/text_view_target_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginBottom="192dp"
                 android:fontFamily="sans-serif-condensed-light"
-                android:text="Weather Here"
+                android:text="Temperature Here"
                 android:textColor="#FFFFFF"
-                android:textSize="20dp"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_target_city" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/edit_text_target_city"
-                android:layout_width="250dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="39dp"
+                android:layout_marginEnd="18dp"
                 android:layout_marginBottom="16dp"
                 android:backgroundTint="#FFFFFF"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:gravity="center"
+                android:textAllCaps="true"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/button_search"
-                app:layout_constraintHorizontal_bias="0.56"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/button_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="#00ff0000"
                 android:fontFamily="sans-serif-light"
@@ -84,8 +102,8 @@
                 android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.95"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/edit_text_target_city" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

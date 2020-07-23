@@ -1,15 +1,12 @@
 package com.example.myapplication;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -39,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText targetEditText;
     private TextView textViewCity;
     private ImageView weatherIcon;
-    private TextView textViewWeather;
+    private TextView textViewTemperature;
+    private TextView textViewTrivials;
 
     //SystemService
 
@@ -53,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         targetEditText = findViewById(R.id.edit_text_target_city);
         weatherIcon = findViewById(R.id.image_view_target_icon);
         textViewCity = findViewById(R.id.text_view_target_city);
-        textViewWeather = findViewById(R.id.text_view_target_weather);
+        textViewTemperature = findViewById(R.id.text_view_target_temp);
+        textViewTrivials = findViewById(R.id.text_view_others);
 
         searchButton.setOnClickListener(this);
 
@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (targetEditText.getText().toString().trim().length() > 0) {
                 String targetData = "https://openweathermap.org/data/2.5/weather?q=" + targetEditText.getText().toString() + "&appid=439d4b804bc8187953eb36d2a8c26a02";
                 callWeatherData(targetData);
+            } else {
+                Toast.makeText(this, "You haven't enter anything!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -120,35 +122,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //JSON
             JSONObject jsonObject = new JSONObject(content);
+
+
             String weatherData = jsonObject.getString("weather");
 
-            Log.d(TAG, weatherData);
 
             JSONArray retrieveArrayDataWeather = new JSONArray(weatherData);
 
             String cityData = jsonObject.getString("name");
-            String descriptionData = "";
             String iconData = "";
 
             for (int i = 0; i < retrieveArrayDataWeather.length(); i++) {
                 JSONObject dataFromArray = retrieveArrayDataWeather.getJSONObject(i);
-                descriptionData = dataFromArray.getString("main");
                 iconData = dataFromArray.getString("icon");
             }
 
-            setDetails(cityData, descriptionData, iconData);
+            JSONObject mainInfoObj = jsonObject.getJSONObject("main");
+            String tempData = mainInfoObj.getString("temp");
 
-            Log.d(TAG, "**********MAIN***********\n" + iconData);
-            Log.d(TAG, "*******Description*******\n" + descriptionData);
+            setDetails(cityData, tempData, iconData);
+            setTrivial(mainInfoObj);
+
         } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "There is no such city called " + targetEditText.getText().toString(), Toast.LENGTH_LONG).show();
             Log.d(TAG, e.getMessage());
         }
     }
 
-    private void setDetails(String cityData, String descriptionData, String iconData) {
+    private void setDetails(String cityData, String temperatureData, String iconData) {
         textViewCity.setText(cityData);
-        textViewWeather.setText(descriptionData);
+        setTemperature(temperatureData);
         String targetIcon = "http://openweathermap.org/img/wn/" + iconData + "@2x.png";
         Uri uri = Uri.parse(targetIcon);
         Log.d(TAG, targetIcon);
@@ -159,6 +162,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .into(weatherIcon);
     }
 
+    private void setTrivial(JSONObject jsonObject) throws JSONException {
+        String highestTemp = jsonObject.getString("temp_max").concat("℃");
+        String lowestTemp = jsonObject.getString("temp_min").concat("℃");
+        String humidity = jsonObject.getString("humidity").concat("%");
+
+        String trivial = highestTemp + " ~ " + lowestTemp + " / " + humidity;
+        textViewTrivials.setText(trivial);
+    }
+
+    private void setTemperature(String temperatureData){
+        temperatureData += '\u2103';
+        textViewTemperature.setText(temperatureData.trim());
+    }
 
     private void hideKeyboard(){
 
